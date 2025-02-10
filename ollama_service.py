@@ -18,15 +18,14 @@ class Ollama:
         self.payload["prompt"] = prompt
         try:
             response = requests.post(
-                self.ollama_url,
-                headers=self.headers,
-                data=json.dumps(self.payload)
-            )
-            response_text = response.txt
-            data = json.loads(response_text)
-            actual_response = data["response"]
+                self.ollama_url, headers=self.headers, json=self.payload)
+
+            data = response.json()  # Directly parse JSON
+            actual_response = data.get("response", "No response key found.")
+
             print(actual_response)
             return actual_response
+
         except requests.exceptions.RequestException as e:
             print(f"Request failed: {e}")
             return None

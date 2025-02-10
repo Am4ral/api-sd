@@ -16,6 +16,7 @@ def process_audio(audio_file_path):
 
     file_name = os.path.basename(audio_file_path).split(".")[0]
     transcript_text = whisper_service.transcribe(audio_file_path)
+    print(transcript_text)
     ollama_response = ollama_service.generate(transcript_text)
     generated_audio = elevenlabs_service.generate(ollama_response)
 
@@ -43,4 +44,4 @@ def process_audio_api():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5545)
+    app.run(host="0.0.0.0", port=5000)
