@@ -1,0 +1,36 @@
+services:
+  flask-api:
+    build: .
+    container_name: audio-api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - whisper
+      - ollama
+    volumes:
+      - ./uploads:/app/uploads
+      - ./transcripts:/app/transcripts
+      - .:/app
+    restart: always
+
+  whisper:
+    image: onerahmet/openai-whisper-asr-webservice:latest
+    container_name: whisper-service
+    ports:
+      - "9000:9000"
+    environment:
+      - ASR_MODEL=base
+      - ASR_ENGINE=openai_whisper
+    restart: always
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama-service
+    volumes:
+      - ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    restart: always
+
+volumes:
+  ollama:
